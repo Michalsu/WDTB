@@ -1,3 +1,4 @@
+/*
 package pl.wsb.fitnesstracker.user.internal;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -10,3 +11,4 @@ record UserDto(@Nullable Long Id, String firstName, String lastName,
                String email) {
 
 }
+*/
