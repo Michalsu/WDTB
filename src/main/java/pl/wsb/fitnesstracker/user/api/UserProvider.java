@@ -30,4 +30,5 @@ public interface UserProvider {
      */
     List<User> findAllUsers();
 
+    List<User> getUsersByName(String firstName, String lastName);
 }

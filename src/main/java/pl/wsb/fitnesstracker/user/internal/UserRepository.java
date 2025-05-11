@@ -3,6 +3,7 @@ package pl.wsb.fitnesstracker.user.internal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.wsb.fitnesstracker.user.api.User;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,4 +21,10 @@ interface UserRepository extends JpaRepository<User, Long> {
                 .findFirst();
     }
 
+    default List<User> findByName(String firstName, String lastName){
+        return findAll().stream()
+                .filter(user -> Objects.equals(user.getFirstName(), firstName))
+                .filter(user -> Objects.equals(user.getLastName(), lastName))
+                .toList();
+    }
 }

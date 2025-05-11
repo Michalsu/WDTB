@@ -2,6 +2,7 @@ package pl.wsb.fitnesstracker.user.internal;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import pl.wsb.fitnesstracker.user.api.User;
 import pl.wsb.fitnesstracker.user.api.UserDtoBasic;
 
 import java.util.List;
@@ -39,6 +40,13 @@ class UserController {
                 .stream()
                 .map(userMapper::toDtoBasic)
                 .toList();
+    }
+
+    //http://localhost:8081/v1/users/byName?firstName=Emma&lastName=Johnson
+    //http://localhost:8081/v1/users/byName?firstName=Ethan&lastName=Taylor
+    @GetMapping("/byName")
+    public List<User> getUserByName(@RequestParam String firstName, @RequestParam String lastName) {
+        return userService.getUsersByName(firstName,lastName);
     }
 
 }
