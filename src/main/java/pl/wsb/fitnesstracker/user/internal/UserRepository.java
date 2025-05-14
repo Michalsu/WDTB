@@ -3,6 +3,7 @@ package pl.wsb.fitnesstracker.user.internal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.wsb.fitnesstracker.user.api.User;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,6 +32,12 @@ interface UserRepository extends JpaRepository<User, Long> {
     default List<User> findByEmailPartial(String email) {
         return findAll().stream()
                 .filter(user -> user.getEmail().toLowerCase().contains(email.toLowerCase()))
+                .toList();
+    }
+
+    default List<User> findByOlderThan(int years) {
+        return findAll().stream()
+                .filter((user -> user.getBirthdate().plusYears(years).isBefore(LocalDate.now())))
                 .toList();
     }
 }

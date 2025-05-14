@@ -12,6 +12,8 @@ public interface UserService {
 
     void deleteUser(Long id);
 
-    List<UserDtoEmail> findUserByEmailPartial(String email);
+
+
+
 }
 

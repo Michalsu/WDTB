@@ -31,4 +31,8 @@ public interface UserProvider {
     List<User> findAllUsers();
 
     List<User> getUsersByName(String firstName, String lastName);
+
+    List<UserDtoEmail> findUserByEmailPartial(String email);
+
+    List<User> getUsersOlderThan(int years);
 }

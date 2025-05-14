@@ -79,4 +79,22 @@ class UserController {
         return userService.findUserByEmailPartial(email);
     }
 
+    /*
+    GET http://localhost:8081/v1/users/searchOlder?age=60
+[
+    {
+        "id": 3,
+        "firstName": "Olivia",
+        "lastName": "Davis",
+        "birthdate": "1949-05-14",
+        "email": "Olivia.Davis@domain.com"
+    }
+]
+     */
+
+    @GetMapping("/searchOlder")
+    public List<User> getUsersOlderThan(@RequestParam int age) {
+        return userService.getUsersOlderThan(age);
+    }
+
 }
