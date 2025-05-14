@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.wsb.fitnesstracker.user.api.User;
+import pl.wsb.fitnesstracker.user.api.UserDtoEmail;
 import pl.wsb.fitnesstracker.user.api.UserProvider;
 import pl.wsb.fitnesstracker.user.api.UserService;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 class UserServiceImpl implements UserService, UserProvider {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public User createUser(final User user) {
@@ -36,6 +38,14 @@ class UserServiceImpl implements UserService, UserProvider {
             throw new IllegalArgumentException("User with id " + id + " does not exist!");
         }
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<UserDtoEmail> findUserByEmailPartial(String email) {
+        return userRepository.findByEmailPartial(email)
+                .stream()
+                .map(userMapper::toDtoEmail)
+                .toList();
     }
 
     @Override

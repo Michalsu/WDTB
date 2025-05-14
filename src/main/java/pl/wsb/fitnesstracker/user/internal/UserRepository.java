@@ -27,4 +27,10 @@ interface UserRepository extends JpaRepository<User, Long> {
                 .filter(user -> Objects.equals(user.getLastName(), lastName))
                 .toList();
     }
+
+    default List<User> findByEmailPartial(String email) {
+        return findAll().stream()
+                .filter(user -> user.getEmail().toLowerCase().contains(email.toLowerCase()))
+                .toList();
+    }
 }

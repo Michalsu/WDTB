@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.wsb.fitnesstracker.user.api.User;
 import pl.wsb.fitnesstracker.user.api.UserDto;
 import pl.wsb.fitnesstracker.user.api.UserDtoBasic;
+import pl.wsb.fitnesstracker.user.api.UserDtoEmail;
 
 import java.util.List;
 
@@ -62,6 +63,20 @@ class UserController {
     @GetMapping("/byName")
     public List<User> getUserByName(@RequestParam String firstName, @RequestParam String lastName) {
         return userService.getUsersByName(firstName,lastName);
+    }
+
+    /*
+    GET http://localhost:8081/v1/users/search?email=gra
+[
+    {
+        "id": 9,
+        "email": "Grace.Anderson@domain.com"
+    }
+]
+     */
+    @GetMapping("/search")
+    public List<UserDtoEmail> getUserByEmail(@RequestParam String email) {
+        return userService.findUserByEmailPartial(email);
     }
 
 }
