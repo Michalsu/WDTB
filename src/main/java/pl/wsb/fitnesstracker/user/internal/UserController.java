@@ -40,6 +40,8 @@ class UserController {
         User createdUser = userService.createUser(user);
         return userMapper.toDto(createdUser);
     }
+
+
     //GET http://localhost:8081/v1/users/basic
     @GetMapping("/basic")
     public List<UserDtoBasic> getBasicUsers() {
@@ -47,6 +49,12 @@ class UserController {
                 .stream()
                 .map(userMapper::toDtoBasic)
                 .toList();
+    }
+// DELETE http://localhost:8081/v1/users/15
+    //dla elementów utworzonych przez dataInit wywala błąd Naruszenie więzów integralności: "FK32IR33U28FO97252HKSJVLUBP: PUBLIC.TRAININGS FOREIGN KEY(USER_ID) REFERENCES PUBLIC.USERS(ID) (CAST(9 AS BIGINT))
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable long id) {
+        userService.deleteUser(id);
     }
 
     //GET http://localhost:8081/v1/users/byName?firstName=Emma&lastName=Johnson
