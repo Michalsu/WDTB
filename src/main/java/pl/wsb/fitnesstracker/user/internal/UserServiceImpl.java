@@ -40,6 +40,15 @@ class UserServiceImpl implements UserService, UserProvider {
         userRepository.deleteById(id);
     }
 
+
+    @Override
+    public User updateEmail(Long id, String email) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " does not exist!"));
+        user.updateEmail(email);
+        return userRepository.save(user);
+    }
+
     @Override
     public List<UserDtoEmail> findUserByEmailPartial(String email) {
         return userRepository.findByEmailPartial(email)

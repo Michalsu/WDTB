@@ -44,6 +44,8 @@ public class User {
         this.birthdate = birthdate;
         this.email = email;
     }
-
+    public void updateEmail(String email) {
+        this.email = email;
+    }
 }
 

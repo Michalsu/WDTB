@@ -97,4 +97,10 @@ class UserController {
         return userService.getUsersOlderThan(age);
     }
 
+    @PatchMapping("/{id}/email")
+    public UserDto updateUser(@PathVariable long id, @RequestParam String email) {
+        User updated = userService.updateEmail(id, email);
+        return userMapper.toDto(updated);
+    }
+
 }

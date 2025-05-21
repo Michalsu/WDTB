@@ -12,7 +12,7 @@ public interface UserService {
 
     void deleteUser(Long id);
 
-
+    User updateEmail(Long id, String email);
 
 
 }
