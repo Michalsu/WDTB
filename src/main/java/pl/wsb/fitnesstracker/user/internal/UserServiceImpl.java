@@ -8,6 +8,7 @@ import pl.wsb.fitnesstracker.user.api.UserDtoEmail;
 import pl.wsb.fitnesstracker.user.api.UserProvider;
 import pl.wsb.fitnesstracker.user.api.UserService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,8 +59,17 @@ class UserServiceImpl implements UserService, UserProvider {
     }
 
     @Override
-    public List<User> getUsersOlderThan(int years) {
-        return userRepository.findByOlderThan(years);
+    public List<User> getUsersOlderThanAge(int years) {
+        return userRepository.findByOlderThanAge(years);
+    }
+
+    /**
+     * @param birthdate
+     * @return
+     */
+    @Override
+    public List<User> getUsersOlderThan(LocalDate birthdate) {
+        return userRepository.findByOlderThan(birthdate);
     }
 
     @Override

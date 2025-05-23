@@ -1,5 +1,6 @@
 package pl.wsb.fitnesstracker.user.api;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,5 +35,7 @@ public interface UserProvider {
 
     List<UserDtoEmail> findUserByEmailPartial(String email);
 
-    List<User> getUsersOlderThan(int years);
+    List<User> getUsersOlderThanAge(int years);
+
+    List<User> getUsersOlderThan(LocalDate birthdate);
 }

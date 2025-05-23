@@ -35,13 +35,16 @@ interface UserRepository extends JpaRepository<User, Long> {
                 .toList();
     }
 
-    default List<User> findByOlderThan(int years) {
+    default List<User> findByOlderThanAge(int years) {
         return findAll().stream()
                 .filter((user -> user.getBirthdate().plusYears(years).isBefore(LocalDate.now())))
                 .toList();
     }
 
-    default Optional<User> findById(String id) {
-        return findById(Long.valueOf(id));
+    default List<User> findByOlderThan(LocalDate birthdate) {
+        return findAll().stream()
+                .filter(user -> user.getBirthdate().isBefore(birthdate))
+                .toList();
     }
+
 }

@@ -8,6 +8,7 @@ import pl.wsb.fitnesstracker.user.api.UserDto;
 import pl.wsb.fitnesstracker.user.api.UserDtoBasic;
 import pl.wsb.fitnesstracker.user.api.UserDtoEmail;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,7 @@ class UserController {
 // DELETE http://localhost:8081/v1/users/15
     //dla elementów utworzonych przez dataInit wywala błąd Naruszenie więzów integralności: "FK32IR33U28FO97252HKSJVLUBP: PUBLIC.TRAININGS FOREIGN KEY(USER_ID) REFERENCES PUBLIC.USERS(ID) (CAST(9 AS BIGINT))
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
     }
@@ -89,7 +91,7 @@ class UserController {
     }
 
     /*
-    GET http://localhost:8081/v1/users/searchOlder?age=60
+    GET http://localhost:8081/v1/users/olderThanAge?age=60
 [
     {
         "id": 3,
@@ -101,9 +103,14 @@ class UserController {
 ]
      */
 
-    @GetMapping("/older/")
-    public List<User> getUsersOlderThan(@RequestParam int age) {
-        return userService.getUsersOlderThan(age);
+    @GetMapping("/olderThanAge/")
+    public List<User> getUsersOlderThanAge(@RequestParam int age) {
+        return userService.getUsersOlderThanAge(age);
+    }
+
+    @GetMapping("/older/{time}")
+    public List<User> getUsersOlderThan(@PathVariable String time) {
+        return userService.getUsersOlderThan(LocalDate.parse(time));
     }
 
     @PatchMapping("/{id}/email")
