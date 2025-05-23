@@ -1,6 +1,7 @@
 package pl.wsb.fitnesstracker.user.internal;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.wsb.fitnesstracker.user.api.User;
 import pl.wsb.fitnesstracker.user.api.UserDto;
@@ -8,6 +9,7 @@ import pl.wsb.fitnesstracker.user.api.UserDtoBasic;
 import pl.wsb.fitnesstracker.user.api.UserDtoEmail;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -36,6 +38,7 @@ class UserController {
 
  */
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public UserDto addUser(@RequestBody UserDto userDto) throws InterruptedException {
         User user = userMapper.toEntity(userDto);
         User createdUser = userService.createUser(user);
@@ -63,6 +66,12 @@ class UserController {
     @GetMapping("/byName")
     public List<User> getUserByName(@RequestParam String firstName, @RequestParam String lastName) {
         return userService.getUsersByName(firstName,lastName);
+    }
+
+
+    @GetMapping("/{id}")
+    public Optional<User> getUserById(@PathVariable long id) {
+        return userService.getUserById(id);
     }
 
     /*

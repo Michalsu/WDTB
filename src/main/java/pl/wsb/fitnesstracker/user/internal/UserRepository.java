@@ -40,4 +40,8 @@ interface UserRepository extends JpaRepository<User, Long> {
                 .filter((user -> user.getBirthdate().plusYears(years).isBefore(LocalDate.now())))
                 .toList();
     }
+
+    default Optional<User> findById(String id) {
+        return findById(Long.valueOf(id));
+    }
 }
