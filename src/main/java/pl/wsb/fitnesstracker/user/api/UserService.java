@@ -10,7 +10,7 @@ public interface UserService {
 
     void deleteUser(Long id);
 
-    User updateEmail(Long id, UserDto email);
+    User updateUser(Long id, UserDto userDto);
 
 
 }

@@ -28,16 +28,7 @@ class UserController {
                 .map(userMapper::toDto)
                 .toList();
     }
-/*
-    POST http://localhost:8081/v1/users
-{
-  "firstName": "Michał",
-  "lastName": "Michalski",
-  "birthdate": "1999-03-19",
-  "email": "michal.michalski@mail.com"
-}
 
- */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto addUser(@RequestBody UserDto userDto) throws InterruptedException {
@@ -46,8 +37,6 @@ class UserController {
         return userMapper.toDto(createdUser);
     }
 
-
-    //GET http://localhost:8081/v1/users/basic
     @GetMapping("/simple")
     public List<UserDtoBasic> getBasicUsers() {
         return userService.findAllUsers()
@@ -76,35 +65,13 @@ class UserController {
         return userService.getUserById(id);
     }
 
-    /*
-    GET http://localhost:8081/v1/users/search?email=gra
-[
-    {
-        "id": 9,
-        "email": "Grace.Anderson@domain.com"
-    }
-]
-     */
     @GetMapping("/email")
     public List<UserDtoEmail> getUserByEmail(@RequestParam String email) {
         return userService.findUserByEmailPartial(email);
     }
 
-    /*
-    GET http://localhost:8081/v1/users/olderThanAge?age=60
-[
-    {
-        "id": 3,
-        "firstName": "Olivia",
-        "lastName": "Davis",
-        "birthdate": "1949-05-14",
-        "email": "Olivia.Davis@domain.com"
-    }
-]
-     */
-
-    @GetMapping("/olderThanAge/")
-    public List<User> getUsersOlderThanAge(@RequestParam int age) {
+    @GetMapping("/olderThanAge/{age}")
+    public List<User> getUsersOlderThanAge(@PathVariable int age) {
         return userService.getUsersOlderThanAge(age);
     }
 
@@ -115,7 +82,7 @@ class UserController {
 
     @PutMapping("/{user_id}")
     public UserDto updateUser(@PathVariable long user_id, @RequestBody UserDto userDto) {
-        User updated = userService.updateEmail(user_id, userDto);
+        User updated = userService.updateUser(user_id, userDto);
         return userMapper.toDto(updated);
     }
 

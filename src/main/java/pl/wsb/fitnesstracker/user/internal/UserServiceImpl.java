@@ -40,7 +40,7 @@ class UserServiceImpl implements UserService, UserProvider {
 
 
     @Override
-    public User updateEmail(Long id, UserDto userDto) {
+    public User updateUser(Long id, UserDto userDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " does not exist!"));
         user.setFirstName(userDto.firstName());
