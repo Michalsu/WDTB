@@ -44,7 +44,7 @@ class UserController {
 
 
     //GET http://localhost:8081/v1/users/basic
-    @GetMapping("/basic")
+    @GetMapping("/simple")
     public List<UserDtoBasic> getBasicUsers() {
         return userService.findAllUsers()
                 .stream()
@@ -74,7 +74,7 @@ class UserController {
     }
 ]
      */
-    @GetMapping("/search")
+    @GetMapping("/email")
     public List<UserDtoEmail> getUserByEmail(@RequestParam String email) {
         return userService.findUserByEmailPartial(email);
     }
@@ -92,7 +92,7 @@ class UserController {
 ]
      */
 
-    @GetMapping("/searchOlder")
+    @GetMapping("/older/")
     public List<User> getUsersOlderThan(@RequestParam int age) {
         return userService.getUsersOlderThan(age);
     }
