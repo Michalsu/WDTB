@@ -3,10 +3,7 @@ package pl.wsb.fitnesstracker.user.internal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.wsb.fitnesstracker.user.api.User;
-import pl.wsb.fitnesstracker.user.api.UserDtoEmail;
-import pl.wsb.fitnesstracker.user.api.UserProvider;
-import pl.wsb.fitnesstracker.user.api.UserService;
+import pl.wsb.fitnesstracker.user.api.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -43,10 +40,13 @@ class UserServiceImpl implements UserService, UserProvider {
 
 
     @Override
-    public User updateEmail(Long id, String email) {
+    public User updateEmail(Long id, UserDto userDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " does not exist!"));
-        user.updateEmail(email);
+        user.setFirstName(userDto.firstName());
+        user.setLastName(userDto.lastName());
+        user.setBirthdate(userDto.birthdate());
+        user.setEmail(userDto.email());
         return userRepository.save(user);
     }
 
