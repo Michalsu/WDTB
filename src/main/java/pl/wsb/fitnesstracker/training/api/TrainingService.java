@@ -1,6 +1,8 @@
 package pl.wsb.fitnesstracker.training.api;
 
+import pl.wsb.fitnesstracker.user.api.User;
+
 public interface TrainingService {
 
-    Training createTraining(Training training);
+    TrainingDto createTraining(TrainingCreateDto trainingData, User user);
 }

@@ -3,9 +3,8 @@ package pl.wsb.fitnesstracker.training.internal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.wsb.fitnesstracker.training.api.Training;
-import pl.wsb.fitnesstracker.training.api.TrainingProvider;
-import pl.wsb.fitnesstracker.training.api.TrainingService;
+import org.springframework.transaction.annotation.Transactional;
+import pl.wsb.fitnesstracker.training.api.*;
 import pl.wsb.fitnesstracker.user.api.User;
 
 import java.util.List;
@@ -19,6 +18,7 @@ class TrainingServiceImpl implements TrainingProvider, TrainingService {
 
 
     private final TrainingRepository trainingRepository;
+    private final TrainingMapper trainingMapper;
 
 
 
@@ -37,16 +37,21 @@ class TrainingServiceImpl implements TrainingProvider, TrainingService {
     }
 
 
-    /**
-     * @param training
-     * @return
-     */
+
+//    @Override
+//    public Training createTraining(Training training) {
+//       log.info("Creating training {}", training);
+//       if (training.getId() != null) {
+//           throw new IllegalArgumentException("Training id is null");
+//       }
+//       return trainingRepository.save(training);
+//    }
+
     @Override
-    public Training createTraining(Training training) {
-       log.info("Creating training {}", training);
-       if (training.getId() != null) {
-           throw new IllegalArgumentException("Training id is null");
-       }
-       return trainingRepository.save(training);
+    @Transactional
+    public TrainingDto createTraining(TrainingCreateDto trainingData, User user) {
+        Training training = trainingMapper.toEntity(trainingData, user);
+        Training saved = trainingRepository.save(training);
+        return trainingMapper.toDto(saved);
     }
 }

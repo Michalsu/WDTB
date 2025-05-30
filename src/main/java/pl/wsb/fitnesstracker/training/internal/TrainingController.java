@@ -5,7 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.wsb.fitnesstracker.training.api.Training;
+import pl.wsb.fitnesstracker.training.api.TrainingCreateDto;
 import pl.wsb.fitnesstracker.training.api.TrainingDto;
+import pl.wsb.fitnesstracker.training.api.TrainingNotFoundException;
+import pl.wsb.fitnesstracker.user.api.User;
+import pl.wsb.fitnesstracker.user.internal.UserRepository;
 
 import java.util.List;
 
@@ -15,6 +19,7 @@ import java.util.List;
 class TrainingController {
     private final TrainingServiceImpl trainingService;
     private final TrainingMapper trainingMapper;
+    private final UserRepository userRepository;
 
     @GetMapping
     public List<TrainingDto> getAllTrainings() {
@@ -26,9 +31,9 @@ class TrainingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TrainingDto createTraining(@RequestBody TrainingDto trainingDto) {
-        Training training = trainingMapper.toEntity(trainingDto);
-        Training createdTraining = trainingService.createTraining(training);
-        return trainingMapper.toDto(createdTraining);
+    public TrainingDto createTraining(@RequestBody TrainingCreateDto trainingDto) {
+        User user = userRepository.findById(trainingDto.userId())
+                .orElseThrow(() -> new TrainingNotFoundException(trainingDto.userId()));
+        return trainingService.createTraining(trainingDto, user);
     }
 }
