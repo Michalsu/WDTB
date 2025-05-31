@@ -7,6 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.wsb.fitnesstracker.training.api.*;
 import pl.wsb.fitnesstracker.user.api.User;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,16 +40,46 @@ class TrainingServiceImpl implements TrainingProvider, TrainingService {
         return trainingRepository.findAll();
     }
 
+    /**
+     * @param activityType
+     * @return
+     */
+    @Override
+    public List<TrainingDto> findByActivityType(ActivityType activityType) {
+        return trainingRepository.findAllByActivityType(activityType)
+                .stream()
+                .map(trainingMapper::toDto)
+                .toList();
+    }
+
+    /**
+     * @param after
+     * @return
+     */
+    @Override
+    public List<TrainingDto> findFinishedAfter(LocalDate after) {
+        ZoneId zoneId = ZoneId.systemDefault(); // or choose the appropriate one
+        Instant instant = after.atStartOfDay(zoneId).toInstant();
+        Date afterDate = Date.from(instant);
+        return trainingRepository.findAllByEndTimeAfter(afterDate)
+                .stream()
+                .map(trainingMapper::toDto)
+                .toList();
+    }
+
+    /**
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<TrainingDto> findByUserId(Long userId) {
+        return trainingRepository.findByUser_Id(userId)
+                .stream()
+                .map(trainingMapper::toDto)
+                .toList();
+    }
 
 
-//    @Override
-//    public Training createTraining(Training training) {
-//       log.info("Creating training {}", training);
-//       if (training.getId() != null) {
-//           throw new IllegalArgumentException("Training id is null");
-//       }
-//       return trainingRepository.save(training);
-//    }
 
     @Override
     @Transactional

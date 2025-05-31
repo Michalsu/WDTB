@@ -11,6 +11,7 @@ import pl.wsb.fitnesstracker.training.api.TrainingNotFoundException;
 import pl.wsb.fitnesstracker.user.api.User;
 import pl.wsb.fitnesstracker.user.internal.UserRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -35,5 +36,22 @@ class TrainingController {
         User user = userRepository.findById(trainingDto.userId())
                 .orElseThrow(() -> new TrainingNotFoundException(trainingDto.userId()));
         return trainingService.createTraining(trainingDto, user);
+    }
+
+
+
+    @GetMapping("/activityType")
+    public List<TrainingDto> getAllByActivityType(@RequestParam ActivityType activityType) {
+        return trainingService.findByActivityType(activityType);
+    }
+
+    @GetMapping("/finished/{afterTime}")
+    public List<TrainingDto> getFinishedAfter(@PathVariable LocalDate afterTime) {
+        return trainingService.findFinishedAfter(afterTime);
+    }
+
+    @GetMapping("/{userId}")
+    public List<TrainingDto> getAllByUser(@PathVariable Long userId) {
+        return trainingService.findByUserId(userId);
     }
 }
