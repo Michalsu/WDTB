@@ -4,10 +4,7 @@ package pl.wsb.fitnesstracker.training.internal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.wsb.fitnesstracker.training.api.Training;
-import pl.wsb.fitnesstracker.training.api.TrainingCreateDto;
-import pl.wsb.fitnesstracker.training.api.TrainingDto;
-import pl.wsb.fitnesstracker.training.api.TrainingNotFoundException;
+import pl.wsb.fitnesstracker.training.api.*;
 import pl.wsb.fitnesstracker.user.api.User;
 import pl.wsb.fitnesstracker.user.internal.UserRepository;
 
@@ -53,5 +50,12 @@ class TrainingController {
     @GetMapping("/{userId}")
     public List<TrainingDto> getAllByUser(@PathVariable Long userId) {
         return trainingService.findByUserId(userId);
+    }
+
+    @PutMapping("/{trainingId}")
+    public TrainingDto updateTraining(@PathVariable Long trainingId, @RequestBody TrainingUpdateDto training) {
+        User user = userRepository.findById(training.userId())
+                .orElseThrow(() -> new TrainingNotFoundException(training.userId()));
+        return trainingService.update(trainingId, training, user);
     }
 }

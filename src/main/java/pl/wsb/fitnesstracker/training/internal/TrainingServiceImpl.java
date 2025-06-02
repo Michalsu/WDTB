@@ -88,4 +88,20 @@ class TrainingServiceImpl implements TrainingProvider, TrainingService {
         Training saved = trainingRepository.save(training);
         return trainingMapper.toDto(saved);
     }
+
+    @Override
+    @Transactional
+    public TrainingDto update(Long trainingId, TrainingUpdateDto training, User user) {
+        Training existing = trainingRepository.findById(trainingId).orElseThrow(() -> new TrainingNotFoundException(trainingId));
+        existing.setUser(user);
+        existing.setStartTime(training.startTime());
+        existing.setEndTime(training.endTime());
+        existing.setActivityType(training.activityType());
+        existing.setDistance(training.distance());
+        existing.setAverageSpeed(training.averageSpeed());
+        Training updated = trainingRepository.save(existing);
+
+        return trainingMapper.toDto(updated);
+    }
+
 }
