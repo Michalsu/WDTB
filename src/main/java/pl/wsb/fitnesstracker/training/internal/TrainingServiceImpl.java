@@ -17,7 +17,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-// TODO: Provide Implementation and correct the return type of the method getTraining
+
 class TrainingServiceImpl implements TrainingProvider, TrainingService {
 
 
@@ -26,14 +26,20 @@ class TrainingServiceImpl implements TrainingProvider, TrainingService {
 
 
 
-
+    /**
+     * Retrieves a training entity by its unique identifier.
+     *
+     * @param trainingId the ID of the training to retrieve
+     * @return an {@link Optional} containing the {@link Training} if found,
+     *         or {@link Optional#empty()} if no training with the given ID exists
+     */
     @Override
-    public Optional<User> getTraining(final Long trainingId) {
-        throw new UnsupportedOperationException("Not finished yet");
-    }
+    public Optional<Training> getTraining(final Long trainingId) {return trainingRepository.findById(trainingId);}
 
     /**
-     * @return
+     * Retrieves all trainings stored in the system.
+     *
+     * @return a list of all {@link Training} entities
      */
     @Override
     public List<Training> getAllTrainings() {
@@ -41,8 +47,10 @@ class TrainingServiceImpl implements TrainingProvider, TrainingService {
     }
 
     /**
-     * @param activityType
-     * @return
+     * Finds all trainings filtered by the specified activity type.
+     *
+     * @param activityType the activity type to filter trainings by
+     * @return list of {@link TrainingDto} matching the activity type
      */
     @Override
     public List<TrainingDto> findByActivityType(ActivityType activityType) {
@@ -53,8 +61,10 @@ class TrainingServiceImpl implements TrainingProvider, TrainingService {
     }
 
     /**
-     * @param after
-     * @return
+     * Finds all trainings that finished after a given date.
+     *
+     * @param after the date after which trainings should have finished
+     * @return list of {@link TrainingDto} for trainings finished after the given date
      */
     @Override
     public List<TrainingDto> findFinishedAfter(LocalDate after) {
@@ -68,8 +78,10 @@ class TrainingServiceImpl implements TrainingProvider, TrainingService {
     }
 
     /**
-     * @param userId
-     * @return
+     * Finds all trainings associated with a given user ID.
+     *
+     * @param userId the ID of the user whose trainings are requested
+     * @return list of {@link TrainingDto} linked to the user
      */
     @Override
     public List<TrainingDto> findByUserId(Long userId) {
@@ -78,9 +90,13 @@ class TrainingServiceImpl implements TrainingProvider, TrainingService {
                 .map(trainingMapper::toDto)
                 .toList();
     }
-
-
-
+    /**
+     * Creates a new training record.
+     *
+     * @param trainingData the data required to create a training
+     * @param user         the user associated with the training
+     * @return the created {@link TrainingDto}
+     */
     @Override
     @Transactional
     public TrainingDto createTraining(TrainingCreateDto trainingData, User user) {
@@ -88,7 +104,15 @@ class TrainingServiceImpl implements TrainingProvider, TrainingService {
         Training saved = trainingRepository.save(training);
         return trainingMapper.toDto(saved);
     }
-
+    /**
+     * Updates an existing training identified by its ID.
+     *
+     * @param trainingId the ID of the training to update
+     * @param training   the updated training data
+     * @param user       the user associated with the training
+     * @return the updated {@link TrainingDto}
+     * @throws TrainingNotFoundException if training with the given ID does not exist
+     */
     @Override
     @Transactional
     public TrainingDto update(Long trainingId, TrainingUpdateDto training, User user) {

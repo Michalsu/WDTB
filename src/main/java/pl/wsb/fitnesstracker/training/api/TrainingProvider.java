@@ -16,14 +16,33 @@ public interface TrainingProvider {
      * @param trainingId id of the training to be searched
      * @return An {@link Optional} containing the located Training, or {@link Optional#empty()} if not found
      */
-    Optional<User> getTraining(Long trainingId);
+    Optional<Training> getTraining(Long trainingId);
 
-
+    /**
+     * Retrieves all training sessions available.
+     *
+     * @return list of all trainings
+     */
     List<Training> getAllTrainings();
-
-       List<TrainingDto> findByActivityType(ActivityType activityType);
-
+    /**
+     * Finds all trainings matching the specified activity type.
+     *
+     * @param activityType the type of activity to filter trainings by
+     * @return list of trainings matching the activity type
+     */
+    List<TrainingDto> findByActivityType(ActivityType activityType);
+    /**
+     * Finds all trainings that finished after the specified date.
+     *
+     * @param afterTime the date after which trainings must have finished
+     * @return list of trainings finished after the specified date
+     */
     List<TrainingDto> findFinishedAfter(LocalDate afterTime);
-
+    /**
+     * Finds all trainings associated with the specified user ID.
+     *
+     * @param userId the ID of the user whose trainings should be retrieved
+     * @return list of trainings belonging to the user
+     */
     List<TrainingDto> findByUserId(Long userId);
 }
